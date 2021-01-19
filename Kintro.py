@@ -25,6 +25,15 @@ def speak (audio):
     engine.runAndWait()
 
 
+def nameinput():
+    speak("what is your name?")
+    a = takeCommand()
+    speak(a)
+    # speak("how can help u?")
+
+
+
+
 def wish():
     hour = int(datetime.datetime.now().hour)
     if hour>= 0 and hour<12:
@@ -36,10 +45,44 @@ def wish():
     else:
         speak("Good Evening !")  
   
-    a = ("what may i help you?")
+    # a = ("what may i help you?")
     speak("I am Phoenix from Karm Marg.")
-    speak(a)
+    # speak(a)
 
+
+def takeCommand():
+     
+    r = sr.Recognizer()
+     
+    with sr.Microphone() as source:
+         
+        print("Listening...")
+        r.pause_threshold = 0.5
+        audio = r.listen(source)
+  
+    try:
+        print("Recognizing...")    
+        query = r.recognize_google(audio, language ='en-in')
+        print(f"User said: {query}\n")
+  
+    except Exception as e:
+        print(e)    
+        print("Unable to Recognize your voice.")  
+        return "None"
+     
+    return query
 
 if __name__ == '__main__':
     wish()
+    takeCommand()
+    nameinput()
+    while True:
+
+        query = takeCommand().lower()
+
+        if "don't listen" in query or "stop listening" in query:
+            speak("for how much time you want to stop phoenix from listening commands")
+            a = int(takeCommand())
+            time.sleep(a)
+            print(a)
+ 
